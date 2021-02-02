@@ -9,6 +9,7 @@ function Index() {
   const [operandONE, setOperandONE] = useState(null);
   const [hasOperator, setHasOperator] = useState(false);
   const [operator, setOperator] = useState("");
+  const [sMode, setSMode] = useState(false);
 
   function onNumberClick(val) {
     if (!operandONE) {
@@ -29,10 +30,15 @@ function Index() {
   }
 
   function onOperatorClick(mode) {
-    !operandONE && setOperandONE(Number(screenValue));
-    setOperator(mode);
-    if (operandONE && mode) {
+    let specialOperation = ["+-", "x^", "√"];
+    if (specialOperation.find((value) => value === mode)) {
       calculation(mode, Number(screenValue));
+    } else {
+      !operandONE && setOperandONE(Number(screenValue));
+      setOperator(mode);
+      if (operandONE && mode) {
+        calculation(mode, Number(screenValue));
+      }
     }
   }
 
@@ -72,7 +78,36 @@ function Index() {
         default:
           break;
       }
+    } else {
+      switch (operation) {
+        case "+-":
+          if (operandTWO > 0) {
+            operationResult = -Math.abs(operandTWO);
+          } else {
+            operationResult = Math.abs(operandTWO);
+          }
+          setScreenValue(String(operationResult));
+          setHasOperator(null);
+          break;
+        case "x^":
+          operationResult = Math.pow(operandTWO, 2);
+          setScreenValue(String(operationResult));
+          setHasOperator(null);
+          break;
+        case "√":
+          operationResult = Math.sqrt(operandTWO);
+          setScreenValue(String(operationResult));
+          setOperandONE(operationResult);
+          setHasOperator(null);
+          break;
+        default:
+          break;
+      }
     }
+  }
+
+  function onActivateSMode() {
+    setSMode(!sMode);
   }
 
   return (
@@ -105,10 +140,12 @@ function Index() {
         <CalcButton name={"/"} handleclick={() => onOperatorClick("/")} />
       </div>
       <div className="button-row">
-        <CalcButton name={"Scientific Mode"} />
-        <CalcButton name={"+/-"} />
-        <CalcButton name={"x^"} />
-        <CalcButton name={"√"} />
+        <CalcButton name={"S Mode"} handleclick={() => onActivateSMode()} />
+        <div style={{ display: sMode ? "inline" : "none" }}>
+          <CalcButton name={"+/-"} handleclick={() => onOperatorClick("+-")} />
+          <CalcButton name={"x^"} handleclick={() => onOperatorClick("x^")} />
+          <CalcButton name={"√"} handleclick={() => onOperatorClick("√")} />
+        </div>
       </div>
     </div>
   );
