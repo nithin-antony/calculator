@@ -5,47 +5,103 @@ import Result from "../result";
 import "./index.css";
 
 function Index() {
-  const [result, setResult] = useState(0);
+  const [screenValue, setScreenValue] = useState("0");
+  const [operandONE, setOperandONE] = useState(null);
+  const [hasOperator, setHasOperator] = useState(false);
+  const [operator, setOperator] = useState("");
 
   function onNumberClick(val) {
-    setResult(val);
+    if (!operandONE) {
+      screenValue === "0"
+        ? setScreenValue(String(val))
+        : setScreenValue(screenValue + val);
+    } else {
+      !hasOperator && setScreenValue(val);
+      setHasOperator(true);
+      hasOperator && setScreenValue(screenValue + val);
+    }
   }
 
   function onClear() {
-    setResult(0);
+    setScreenValue("0");
+    setHasOperator(false);
+    setOperandONE(null);
   }
 
   function onOperatorClick(mode) {
-  
+    !operandONE && setOperandONE(Number(screenValue));
+    setOperator(mode);
+    if (operandONE && mode) {
+      calculation(mode, Number(screenValue));
+    }
+  }
+
+  function onGiveResult() {
+    operator && calculation(operator, Number(screenValue));
+    setOperator(null);
+  }
+
+  function calculation(operation, operandTWO) {
+    let operationResult;
+    if (hasOperator) {
+      switch (operation) {
+        case "+":
+          operationResult = operandONE + operandTWO;
+          setScreenValue(String(operationResult));
+          setOperandONE(operationResult);
+          setHasOperator(null);
+          break;
+        case "-":
+          operationResult = operandONE - operandTWO;
+          setScreenValue(String(operationResult));
+          setOperandONE(operationResult);
+          setHasOperator(null);
+          break;
+        case "/":
+          operationResult = operandONE / operandTWO;
+          setScreenValue(String(operationResult));
+          setOperandONE(operationResult);
+          setHasOperator(null);
+          break;
+        case "*":
+          operationResult = operandONE * operandTWO;
+          setScreenValue(String(operationResult));
+          setOperandONE(operationResult);
+          setHasOperator(null);
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   return (
     <div className="calculator-view">
       <div className="result-view">
-        <Result result={result} />
+        <Result result={screenValue} />
       </div>
       <div className="button-row">
-        <CalcButton name={1} handleclick={() => onNumberClick(1)} />
-        <CalcButton name={2} handleclick={() => onNumberClick(2)} />
-        <CalcButton name={3} handleclick={() => onNumberClick(3)} />
+        <CalcButton name={1} handleclick={() => onNumberClick("1")} />
+        <CalcButton name={2} handleclick={() => onNumberClick("2")} />
+        <CalcButton name={3} handleclick={() => onNumberClick("3")} />
         <CalcButton name={"+"} handleclick={() => onOperatorClick("+")} />
       </div>
       <div className="button-row">
-        <CalcButton name={4} handleclick={() => onNumberClick(4)} />
-        <CalcButton name={5} handleclick={() => onNumberClick(5)} />
-        <CalcButton name={6} handleclick={() => onNumberClick(6)} />
+        <CalcButton name={4} handleclick={() => onNumberClick("4")} />
+        <CalcButton name={5} handleclick={() => onNumberClick("5")} />
+        <CalcButton name={6} handleclick={() => onNumberClick("6")} />
         <CalcButton name={"-"} handleclick={() => onOperatorClick("-")} />
       </div>
       <div className="button-row">
-        <CalcButton name={7} handleclick={() => onNumberClick(7)} />
-        <CalcButton name={8} handleclick={() => onNumberClick(8)} />
-        <CalcButton name={9} handleclick={() => onNumberClick(9)} />
+        <CalcButton name={7} handleclick={() => onNumberClick("7")} />
+        <CalcButton name={8} handleclick={() => onNumberClick("8")} />
+        <CalcButton name={9} handleclick={() => onNumberClick("9")} />
         <CalcButton name={"x"} handleclick={() => onOperatorClick("*")} />
       </div>
       <div className="button-row">
         <CalcButton name={"clear"} handleclick={() => onClear()} />
-        <CalcButton name={0} />
-        <CalcButton name={"="} />
+        <CalcButton name={0} handleclick={() => onNumberClick("0")} />
+        <CalcButton name={"="} handleclick={() => onGiveResult()} />
         <CalcButton name={"/"} handleclick={() => onOperatorClick("/")} />
       </div>
       <div className="button-row">
