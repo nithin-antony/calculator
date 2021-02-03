@@ -1,10 +1,15 @@
 import React from "react";
+import "./index.css";
 
 function Index(props) {
   return (
-    <>
-      <input type="button" onClick={props.handleclick} value={props.name}></input>
-    </>
+    <div className={props.theme === "light" ? "cal-button" : "cal-button-dark"}>
+      <input
+        type="button"
+        onClick={props.handleclick}
+        value={props.name}
+      ></input>
+    </div>
   );
 }
 

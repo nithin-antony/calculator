@@ -10,6 +10,7 @@ function Index() {
   const [hasOperator, setHasOperator] = useState(false);
   const [operator, setOperator] = useState("");
   const [sMode, setSMode] = useState(false);
+  const [theme, setTheme] = useState("light");
 
   function onNumberClick(val) {
     if (!operandONE) {
@@ -110,42 +111,141 @@ function Index() {
     setSMode(!sMode);
   }
 
+  function toggleTheme(value) {
+    setTheme(value);
+    if (value === "dark") {
+      document.body.style.background = "#000";
+    } else {
+      document.body.style.background = "#fff";
+    }
+  }
+
   return (
     <div className="calculator-view">
-      <div className="result-view">
-        <Result result={screenValue} />
+      <Result result={screenValue} theme={theme} />
+      <div className="button-row">
+        <CalcButton
+          name={1}
+          theme={theme}
+          handleclick={() => onNumberClick("1")}
+        />
+        <CalcButton
+          name={2}
+          theme={theme}
+          handleclick={() => onNumberClick("2")}
+        />
+        <CalcButton
+          name={3}
+          theme={theme}
+          handleclick={() => onNumberClick("3")}
+        />
+        <CalcButton
+          name={"+"}
+          theme={theme}
+          handleclick={() => onOperatorClick("+")}
+        />
       </div>
       <div className="button-row">
-        <CalcButton name={1} handleclick={() => onNumberClick("1")} />
-        <CalcButton name={2} handleclick={() => onNumberClick("2")} />
-        <CalcButton name={3} handleclick={() => onNumberClick("3")} />
-        <CalcButton name={"+"} handleclick={() => onOperatorClick("+")} />
+        <CalcButton
+          name={4}
+          theme={theme}
+          handleclick={() => onNumberClick("4")}
+        />
+        <CalcButton
+          name={5}
+          theme={theme}
+          handleclick={() => onNumberClick("5")}
+        />
+        <CalcButton
+          name={6}
+          theme={theme}
+          handleclick={() => onNumberClick("6")}
+        />
+        <CalcButton
+          name={"-"}
+          theme={theme}
+          handleclick={() => onOperatorClick("-")}
+        />
       </div>
       <div className="button-row">
-        <CalcButton name={4} handleclick={() => onNumberClick("4")} />
-        <CalcButton name={5} handleclick={() => onNumberClick("5")} />
-        <CalcButton name={6} handleclick={() => onNumberClick("6")} />
-        <CalcButton name={"-"} handleclick={() => onOperatorClick("-")} />
+        <CalcButton
+          name={7}
+          theme={theme}
+          handleclick={() => onNumberClick("7")}
+        />
+        <CalcButton
+          name={8}
+          theme={theme}
+          handleclick={() => onNumberClick("8")}
+        />
+        <CalcButton
+          name={9}
+          theme={theme}
+          handleclick={() => onNumberClick("9")}
+        />
+        <CalcButton
+          name={"x"}
+          theme={theme}
+          handleclick={() => onOperatorClick("*")}
+        />
       </div>
       <div className="button-row">
-        <CalcButton name={7} handleclick={() => onNumberClick("7")} />
-        <CalcButton name={8} handleclick={() => onNumberClick("8")} />
-        <CalcButton name={9} handleclick={() => onNumberClick("9")} />
-        <CalcButton name={"x"} handleclick={() => onOperatorClick("*")} />
+        <CalcButton
+          name={"clear"}
+          theme={theme}
+          handleclick={() => onClear()}
+        />
+        <CalcButton
+          name={0}
+          theme={theme}
+          handleclick={() => onNumberClick("0")}
+        />
+        <CalcButton
+          name={"="}
+          theme={theme}
+          handleclick={() => onGiveResult()}
+        />
+        <CalcButton
+          name={"/"}
+          theme={theme}
+          handleclick={() => onOperatorClick("/")}
+        />
       </div>
       <div className="button-row">
-        <CalcButton name={"clear"} handleclick={() => onClear()} />
-        <CalcButton name={0} handleclick={() => onNumberClick("0")} />
-        <CalcButton name={"="} handleclick={() => onGiveResult()} />
-        <CalcButton name={"/"} handleclick={() => onOperatorClick("/")} />
-      </div>
-      <div className="button-row">
-        <CalcButton name={"S Mode"} handleclick={() => onActivateSMode()} />
-        <div style={{ display: sMode ? "inline" : "none" }}>
-          <CalcButton name={"+/-"} handleclick={() => onOperatorClick("+-")} />
-          <CalcButton name={"x^"} handleclick={() => onOperatorClick("x^")} />
-          <CalcButton name={"√"} handleclick={() => onOperatorClick("√")} />
+        <CalcButton
+          name={"S Mode"}
+          theme={theme}
+          handleclick={() => onActivateSMode()}
+        />
+        <div style={{ display: sMode ? "flex" : "none" }}>
+          <CalcButton
+            name={"+/-"}
+            theme={theme}
+            handleclick={() => onOperatorClick("+-")}
+          />
+          <CalcButton
+            name={"x^"}
+            theme={theme}
+            handleclick={() => onOperatorClick("x^")}
+          />
+          <CalcButton
+            name={"√"}
+            theme={theme}
+            handleclick={() => onOperatorClick("√")}
+          />
         </div>
+      </div>
+      <div className="button-row">
+        <CalcButton
+          name={"Light Mode"}
+          theme={theme}
+          handleclick={() => toggleTheme("light")}
+        />
+        <CalcButton
+          name={"Dark Mode"}
+          theme={theme}
+          handleclick={() => toggleTheme("dark")}
+        />
       </div>
     </div>
   );
