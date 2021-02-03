@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CalcButton from "../button";
 import Result from "../result";
 
@@ -11,6 +11,45 @@ function Index() {
   const [operator, setOperator] = useState("");
   const [sMode, setSMode] = useState(false);
   const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeydown);
+    return () => {
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  });
+
+  const handleKeydown = (evt) => {
+    let key = evt.key;
+    switch (key) {
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+      case "0":
+        onNumberClick(key);
+        break;
+      case "+":
+      case "-":
+      case "*":
+      case "/":
+        onOperatorClick(key);
+        break;
+      case "=":
+        onGiveResult();
+        break;
+      case "Escape":
+        onClear();
+        break;
+      default:
+        break;
+    }
+  };
 
   function onNumberClick(val) {
     if (!operandONE) {
